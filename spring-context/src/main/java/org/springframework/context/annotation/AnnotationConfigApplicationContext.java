@@ -62,13 +62,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
-		System.out.println("init start reader ");
 		this.reader = new AnnotatedBeanDefinitionReader(this);
-		System.out.println("init end reader ");
 
-		System.out.println("init start scanner ");
+
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
-		System.out.println("init end scanner ");
 	}
 
 	/**

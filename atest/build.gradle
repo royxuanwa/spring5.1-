@@ -15,4 +15,7 @@ dependencies {
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.4'
     compile(project(":spring-context"))
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+//    compile ("org.mybatis:mybatis:3.3.1")
+//    compile ("org.mybatis:mybatis-spring:1.2.5")
 }

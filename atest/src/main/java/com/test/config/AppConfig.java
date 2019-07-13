@@ -1,7 +1,7 @@
 package com.test.config;
 
-import com.test.service.TestService;
-import org.springframework.context.annotation.Bean;
+
+import com.test.annotation.EnableAutowiredMode;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -9,6 +9,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @Configuration
 @ComponentScan("com.test")
 @EnableAspectJAutoProxy
+@EnableAutowiredMode
 public class AppConfig {
 
 //	@Bean

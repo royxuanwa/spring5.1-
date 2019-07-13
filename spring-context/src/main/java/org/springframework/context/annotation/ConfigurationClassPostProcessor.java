@@ -343,6 +343,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 			}
 			//将configClasses集合内的信息转换成BeanDefinition进行注册
 			this.reader.loadBeanDefinitions(configClasses);
+
 			alreadyParsed.addAll(configClasses);
 
 			candidates.clear();
