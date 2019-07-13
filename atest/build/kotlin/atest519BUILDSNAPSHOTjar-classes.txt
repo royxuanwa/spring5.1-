@@ -1,0 +1,1 @@
+D:\javaweb\spring\spring-framework-5.1.x\spring-framework-5.1.x\atest\build\classes\java\main\com\test\Appcation.class;D:\javaweb\spring\spring-framework-5.1.x\spring-framework-5.1.x\atest\build\classes\java\main\com\test\service\TestService.class
