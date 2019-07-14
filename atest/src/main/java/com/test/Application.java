@@ -13,6 +13,6 @@ public class Application {
 //		context.getBeanFactoryPostProcessors()
 		context.register(AppConfig.class);
 		context.refresh();
-		context.getBean(TestService.class).test();
+//		context.getBean(TestService.class).test();
 	}
 }

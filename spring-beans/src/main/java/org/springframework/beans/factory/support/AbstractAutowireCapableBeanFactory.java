@@ -530,7 +530,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			//真正创建bean的方法
+
+			System.out.println("doCreateBean：" + beanName);
 			Object beanInstance = doCreateBean(beanName, mbdToUse, args);
+			System.out.println("doCreateBean结束：" + beanName);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Finished creating instance of bean '" + beanName + "'");
 			}
@@ -563,7 +566,6 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	//产生bean的方法，并且完成代理
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
 			throws BeanCreationException {
-
 		// Instantiate the bean.
 		//BeanWrapper是对bean的一个封装
 		BeanWrapper instanceWrapper = null;
@@ -599,7 +601,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
-		//判断循环依赖
+		//循环依赖解决在isSingletonCurrentlyInCreation缓存的获取数据
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
 				isSingletonCurrentlyInCreation(beanName));
 		if (earlySingletonExposure) {
@@ -615,9 +617,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		try {
 			//完成自动装配
+			System.out.println("装配：" + beanName);
 			populateBean(beanName, mbd, instanceWrapper);
-			//执行了beanPostProcessor中所有的回调方法
-			//执行了InitializingBean的回调方法
+			System.out.println("装配结束：" + beanName);
+			//执行了beanPostProcessor中所有的回调方法,执行了InitializingBean的回调方法
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		} catch (Throwable ex) {
 			if (ex instanceof BeanCreationException && beanName.equals(((BeanCreationException) ex).getBeanName())) {
@@ -1460,6 +1463,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
+					//在AutowiredAnnotationBeanPostProcessor执行postProcessProperties时，完成依赖的bean创建并且注入
 					PropertyValues pvsToUse = ibp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
 					if (pvsToUse == null) {
 						if (filteredPds == null) {
