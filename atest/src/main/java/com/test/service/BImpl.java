@@ -9,7 +9,4 @@ import org.springframework.stereotype.Component;
 public class BImpl implements B {
 	@Autowired
 	A a;
-
-
-
 }

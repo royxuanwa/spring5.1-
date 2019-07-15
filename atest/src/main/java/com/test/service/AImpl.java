@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AImpl implements A {
-
 	@Autowired
 	B b;
 }

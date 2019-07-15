@@ -228,7 +228,6 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
-		//因为MergedBeanDefinition，改变了子类的beanDefinition，所以将这个bean原先的缓存的注入信息拿出来
 		//将这个bean原先缓存的注入信息跟现在的信息进行比对，重新生成
 		InjectionMetadata metadata = findAutowiringMetadata(beanName, beanType, null);
 		metadata.checkConfigMembers(beanDefinition);
