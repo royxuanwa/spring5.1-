@@ -273,10 +273,12 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 		if (candidateConstructors == null) {
 			// Fully synchronized resolution now...
 			synchronized (this.candidateConstructorsCache) {
+				//获取锁了之后重新取出缓存判断，以防止阻塞的时候产生了对应缓存
 				candidateConstructors = this.candidateConstructorsCache.get(beanClass);
 				if (candidateConstructors == null) {
 					Constructor<?>[] rawCandidates;
 					try {
+						//拿出所有的构造方法
 						rawCandidates = beanClass.getDeclaredConstructors();
 					} catch (Throwable ex) {
 						throw new BeanCreationException(beanName,
@@ -284,9 +286,13 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 										"] from ClassLoader [" + beanClass.getClassLoader() + "] failed", ex);
 					}
 					List<Constructor<?>> candidates = new ArrayList<>(rawCandidates.length);
+					//必要的构造函数
 					Constructor<?> requiredConstructor = null;
+					//默认的构造函数
 					Constructor<?> defaultConstructor = null;
+					//拿出利用Kotlin标注的构造函数
 					Constructor<?> primaryConstructor = BeanUtils.findPrimaryConstructor(beanClass);
+					//（不是混合的构造方法and可用的构造方法）的个数
 					int nonSyntheticConstructors = 0;
 					for (Constructor<?> candidate : rawCandidates) {
 						if (!candidate.isSynthetic()) {
@@ -294,6 +300,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 						} else if (primaryConstructor != null) {
 							continue;
 						}
+						//看构造函数上有没有加value或者autowired注解
 						AnnotationAttributes ann = findAutowiredAnnotation(candidate);
 						if (ann == null) {
 							Class<?> userClass = ClassUtils.getUserClass(beanClass);
@@ -309,6 +316,8 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 						}
 						if (ann != null) {
 							if (requiredConstructor != null) {
+								//已经有必要的构造函数，又解析出来一个必要构造函数，抛出异常
+								//不能同时用@autowired标注同一个类的两个构造函数
 								throw new BeanCreationException(beanName,
 										"Invalid autowire-marked constructor: " + candidate +
 												". Found constructor with 'required' Autowired annotation already: " +
@@ -326,6 +335,7 @@ public class AutowiredAnnotationBeanPostProcessor extends InstantiationAwareBean
 							}
 							candidates.add(candidate);
 						} else if (candidate.getParameterCount() == 0) {
+							//没有加autowired和value注解，没有传入参数，设置成默认构造方法
 							defaultConstructor = candidate;
 						}
 					}
